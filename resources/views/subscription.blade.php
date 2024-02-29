@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Product 1</h5>
                         <p class="card-text">Description of Product 1.</p>
-                        <a href="#" class="btn btn-primary btn-block">Buy Now</a>
+                        <a href="{{ url('/checkout') }}" class="btn btn-primary btn-block">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Product 2</h5>
                         <p class="card-text">Description of Product 2.</p>
-                        <a href="#" class="btn btn-primary btn-block">Buy Now</a>
+                        <a href="{{ url('/checkout') }}" class="btn btn-primary btn-block">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Product 3</h5>
                         <p class="card-text">Description of Product 3.</p>
-                        <a href="#" class="btn btn-primary btn-block">Buy Now</a>
+                        <a href="{{ url('/checkout') }}" class="btn btn-primary btn-block">Buy Now</a>
                     </div>
                 </div>
             </div>

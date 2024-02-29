@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +23,17 @@ Route::middleware(['setData'])->group(function () {
     });
 
     Route::get('/buy', 'SubscriptionController@subscription')->name('buy');
+    Route::get('/checkout', 'SslCommerzPaymentController@exampleEasyCheckout');
+    Route::get('/checkout2', 'SslCommerzPaymentController@exampleHostedCheckout');
+
+    Route::post('/pay', 'SslCommerzPaymentController@index');
+    Route::post('/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
+
+    Route::post('/success', 'SslCommerzPaymentController@success');
+    Route::post('/fail', 'SslCommerzPaymentController@fail');
+    Route::post('/cancel', 'SslCommerzPaymentController@cancel');
+
+    Route::post('/ipn', 'SslCommerzPaymentController@ipn');
 
     Auth::routes();
 
