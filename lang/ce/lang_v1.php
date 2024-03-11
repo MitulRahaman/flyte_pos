@@ -1387,4 +1387,9 @@ return [
     'kitchen_order_tooltip' => '只有在选中此选项时，订单才会发送到厨房',
     'disable_quotation' => '禁用报价',
     'disable_card' => '禁用卡片',
+    'assigned_to' => '分配给',
+    'has_no_sell_from' => '没有销售来自',
+    'delivery_note' => '交货单',
+    'above_mentioned_items_received_in_good_condition' => '以上提到的物品在良好的条件下收到',
+    'received_by' => '接收者',
 ];

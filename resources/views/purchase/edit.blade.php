@@ -22,10 +22,10 @@
 
   @include('layouts.partials.error')
 
-  {!! Form::open(['url' =>  action('PurchaseController@update' , [$purchase->id] ), 'method' => 'PUT', 'id' => 'add_purchase_form', 'files' => true ]) !!}
+  {!! Form::open(['url' =>  action([\App\Http\Controllers\PurchaseController::class, 'update'] , [$purchase->id] ), 'method' => 'PUT', 'id' => 'add_purchase_form', 'files' => true ]) !!}
 
   @php
-    $currency_precision = config('constants.currency_precision', 2);
+    $currency_precision = session('business.currency_precision', 2);
   @endphp
 
   <input type="hidden" id="purchase_id" value="{{ $purchase->id }}">
@@ -110,7 +110,7 @@
                   <div class="multi-input">
                     {!! Form::label('pay_term_number', __('contact.pay_term') . ':') !!} @show_tooltip(__('tooltip.pay_term'))
                     <br/>
-                    {!! Form::number('pay_term_number', $purchase->pay_term_number, ['class' => 'form-control width-40 pull-left', 'placeholder' => __('contact.pay_term')]); !!}
+                    {!! Form::number('pay_term_number', $purchase->pay_term_number, ['class' => 'form-control width-40 pull-left', 'min' => 0, 'placeholder' => __('contact.pay_term')]); !!}
 
                     {!! Form::select('pay_term_type', 
                       ['months' => __('lang_v1.months'), 
@@ -223,7 +223,10 @@
 
     @component('components.widget', ['class' => 'box-primary'])
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-sm-2 text-center">
+              <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#import_purchase_products_modal">@lang('product.import_products')</button>
+            </div>
+            <div class="col-sm-8">
               <div class="form-group">
                 <div class="input-group">
                   <span class="input-group-addon">
@@ -235,7 +238,7 @@
             </div>
             <div class="col-sm-2">
               <div class="form-group">
-                <button tabindex="-1" type="button" class="btn btn-link btn-modal"data-href="{{action('ProductController@quickAdd')}}" 
+                <button tabindex="-1" type="button" class="btn btn-link btn-modal"data-href="{{action([\App\Http\Controllers\ProductController::class, 'quickAdd'])}}" 
                       data-container=".quick_add_product_modal"><i class="fa fa-plus"></i> @lang( 'product.add_new_product' ) </button>
               </div>
             </div>
@@ -518,7 +521,7 @@
   
     <div class="row">
         <div class="col-sm-12 text-center">
-          <button type="button" id="submit_purchase_form" class="btn btn-primary btn-big">@lang('messages.update')</button>
+          <button type="button" id="submit_purchase_form" class="btn btn-primary btn-big btn-flat">@lang('messages.update')</button>
         </div>
     </div>
 {!! Form::close() !!}
@@ -529,7 +532,7 @@
 <div class="modal fade contact_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
   @include('contact.create', ['quick_add' => true])
 </div>
-
+@include('purchase.partials.import_purchase_products_modal')
 @endsection
 
 @section('javascript')

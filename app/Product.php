@@ -23,7 +23,7 @@ class Product extends Model
     protected $casts = [
         'sub_unit_ids' => 'array',
     ];
-    
+
     /**
      * Get the products image.
      *
@@ -31,26 +31,28 @@ class Product extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!empty($this->image)) {
-            $image_url = asset('/uploads/img/' . rawurlencode($this->image));
+        if (! empty($this->image)) {
+            $image_url = asset('/uploads/img/'.rawurlencode($this->image));
         } else {
             $image_url = asset('/img/default.png');
         }
+
         return $image_url;
     }
 
     /**
-    * Get the products image path.
-    *
-    * @return string
-    */
+     * Get the products image path.
+     *
+     * @return string
+     */
     public function getImagePathAttribute()
     {
-        if (!empty($this->image)) {
-            $image_path = public_path('uploads') . '/' . config('constants.product_img_path') . '/' . $this->image;
+        if (! empty($this->image)) {
+            $image_path = public_path('uploads').'/'.config('constants.product_img_path').'/'.$this->image;
         } else {
             $image_path = null;
         }
+
         return $image_path;
     }
 
@@ -58,7 +60,7 @@ class Product extends Model
     {
         return $this->hasMany(\App\ProductVariation::class);
     }
-    
+
     /**
      * Get the brand associated with the product.
      */
@@ -66,14 +68,23 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Brands::class);
     }
-    
+
     /**
-    * Get the unit associated with the product.
-    */
+     * Get the unit associated with the product.
+     */
     public function unit()
     {
         return $this->belongsTo(\App\Unit::class);
     }
+
+    /**
+     * Get the unit associated with the product.
+     */
+    public function second_unit()
+    {
+        return $this->belongsTo(\App\Unit::class, 'secondary_unit_id');
+    }
+
     /**
      * Get category associated with the product.
      */
@@ -81,6 +92,7 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Category::class);
     }
+
     /**
      * Get sub-category associated with the product.
      */
@@ -88,9 +100,9 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Category::class, 'sub_category_id', 'id');
     }
-    
+
     /**
-     * Get the brand associated with the product.
+     * Get the tax associated with the product.
      */
     public function product_tax()
     {
@@ -132,7 +144,7 @@ class Product extends Model
     /**
      * Scope a query to only include active products.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
@@ -143,7 +155,7 @@ class Product extends Model
     /**
      * Scope a query to only include inactive products.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeInactive($query)
@@ -154,7 +166,7 @@ class Product extends Model
     /**
      * Scope a query to only include products for sales.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeProductForSales($query)
@@ -165,7 +177,7 @@ class Product extends Model
     /**
      * Scope a query to only include products not for sales.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeProductNotForSales($query)
@@ -181,7 +193,7 @@ class Product extends Model
     /**
      * Scope a query to only include products available for a location.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForLocation($query, $location_id)
@@ -204,5 +216,10 @@ class Product extends Model
     public function media()
     {
         return $this->morphMany(\App\Media::class, 'model');
+    }
+
+    public function rack_details()
+    {
+        return $this->hasMany(\App\ProductRack::class);
     }
 }

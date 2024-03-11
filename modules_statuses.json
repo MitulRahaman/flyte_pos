@@ -15,5 +15,7 @@
     "Superadmin": true,
     "Woocommerce": true,
     "AiAssistance": true,
-    "Hms": true
+    "Hms": true,
+    "InboxReport": true,
+    "CustomDashboard": true
 }

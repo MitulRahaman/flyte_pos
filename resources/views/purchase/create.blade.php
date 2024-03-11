@@ -22,7 +22,7 @@
 
 	@include('layouts.partials.error')
 
-	{!! Form::open(['url' => action('PurchaseController@store'), 'method' => 'post', 'id' => 'add_purchase_form', 'files' => true ]) !!}
+	{!! Form::open(['url' => action([\App\Http\Controllers\PurchaseController::class, 'store']), 'method' => 'post', 'id' => 'add_purchase_form', 'files' => true ]) !!}
 	@component('components.widget', ['class' => 'box-primary'])
 		<div class="row">
 			<div class="@if(!empty($default_purchase_status)) col-sm-4 @else col-sm-3 @endif">
@@ -107,7 +107,7 @@
 		            <div class="multi-input">
 		              {!! Form::label('pay_term_number', __('contact.pay_term') . ':') !!} @show_tooltip(__('tooltip.pay_term'))
 		              <br/>
-		              {!! Form::number('pay_term_number', null, ['class' => 'form-control width-40 pull-left', 'placeholder' => __('contact.pay_term')]); !!}
+		              {!! Form::number('pay_term_number', null, ['class' => 'form-control width-40 pull-left', 'min' => 0, 'placeholder' => __('contact.pay_term')]); !!}
 
 		              {!! Form::select('pay_term_type', 
 		              	['months' => __('lang_v1.months'), 
@@ -222,7 +222,10 @@
 
 	@component('components.widget', ['class' => 'box-primary'])
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
+			<div class="col-sm-2 text-center">
+				<button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#import_purchase_products_modal">@lang('product.import_products')</button>
+			</div>
+			<div class="col-sm-8">
 				<div class="form-group">
 					<div class="input-group">
 						<span class="input-group-addon">
@@ -234,7 +237,7 @@
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
-					<button tabindex="-1" type="button" class="btn btn-link btn-modal"data-href="{{action('ProductController@quickAdd')}}" 
+					<button tabindex="-1" type="button" class="btn btn-link btn-modal"data-href="{{action([\App\Http\Controllers\ProductController::class, 'quickAdd'])}}" 
             	data-container=".quick_add_product_modal"><i class="fa fa-plus"></i> @lang( 'product.add_new_product' ) </button>
 				</div>
 			</div>
@@ -552,7 +555,7 @@
 					{!! Form::hidden('advance_balance', null, ['id' => 'advance_balance', 'data-error-msg' => __('lang_v1.required_advance_balance_not_available')]); !!}
 				</div>
 			</div>
-			@include('sale_pos.partials.payment_row_form', ['row_index' => 0, 'show_date' => true])
+			@include('sale_pos.partials.payment_row_form', ['row_index' => 0, 'show_date' => true, 'show_denomination' => true])
 			<hr>
 			<div class="row">
 				<div class="col-sm-12">
@@ -561,8 +564,8 @@
 			</div>
 			<br>
 			<div class="row">
-				<div class="col-sm-12">
-					<button type="button" id="submit_purchase_form" class="btn btn-primary pull-right btn-flat">@lang('messages.save')</button>
+				<div class="col-sm-12 text-center">
+					<button type="button" id="submit_purchase_form" class="btn btn-big btn-primary btn-flat">@lang('messages.save')</button>
 				</div>
 			</div>
 		</div>
@@ -575,6 +578,8 @@
 <div class="modal fade contact_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
 	@include('contact.create', ['quick_add' => true])
 </div>
+
+@include('purchase.partials.import_purchase_products_modal')
 <!-- /.content -->
 @endsection
 
@@ -588,6 +593,14 @@
                 format: moment_date_format + ' ' + moment_time_format,
                 ignoreReadonly: true,
             });
+
+			if($('.payment_types_dropdown').length){
+				$('.payment_types_dropdown').change();
+			}
+			set_payment_type_dropdown();
+			$('select#location_id').change(function() {
+				set_payment_type_dropdown();
+			});
     	});
     	$(document).on('change', '.payment_types_dropdown, #location_id', function(e) {
 		    var default_accounts = $('select#location_id').length ? 
@@ -621,6 +634,29 @@
 		        }    
 		    }
 		});
+
+		function set_payment_type_dropdown() {
+			var payment_settings = $('#location_id').find(':selected').data('default_payment_accounts');
+			payment_settings = payment_settings ? payment_settings : [];
+			enabled_payment_types = [];
+			for (var key in payment_settings) {
+				if (payment_settings[key] && payment_settings[key]['is_enabled']) {
+					enabled_payment_types.push(key);
+				}
+			}
+			if (enabled_payment_types.length) {
+				$(".payment_types_dropdown > option").each(function() {
+					//skip if advance
+					if ($(this).val() && $(this).val() != 'advance') {
+						if (enabled_payment_types.indexOf($(this).val()) != -1) {
+							$(this).removeClass('hide');
+						} else {
+							$(this).addClass('hide');
+						}
+					}
+				});
+			}
+		}
 	</script>
 	@include('purchase.partials.keyboard_shortcuts')
 @endsection

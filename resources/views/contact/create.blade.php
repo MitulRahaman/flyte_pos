@@ -11,11 +11,10 @@
       $type = 'lead';
       $customer_groups = [];
     } else {
-      $url = action('ContactController@store');
+      $url = action([\App\Http\Controllers\ContactController::class, 'store']);
       $type = isset($selected_type) ? $selected_type : '';
       $sources = [];
       $life_stages = [];
-      $users = [];
     }
   @endphp
     {!! Form::open(['url' => $url, 'method' => 'post', 'id' => $form_id ]) !!}
@@ -197,6 +196,8 @@
                   </div>
               </div>
             </div>
+
+            <!-- User in create leads -->
             <div class="col-md-6 lead_additional_div">
                   <div class="form-group">
                       {!! Form::label('user_id', __('lang_v1.assigned_to') . ':*' ) !!}
@@ -204,10 +205,26 @@
                           <span class="input-group-addon">
                               <i class="fa fa-user"></i>
                           </span>
-                          {!! Form::select('user_id[]', $users, null , ['class' => 'form-control select2', 'id' => 'user_id', 'multiple', 'required', 'style' => 'width: 100%;']); !!}
+                          {!! Form::select('user_id[]', $users ?? [], null , ['class' => 'form-control select2', 'id' => 'user_id', 'multiple', 'required', 'style' => 'width: 100%;']); !!}
                       </div>
                   </div>
             </div>
+
+            <!-- User in create customer & supplier -->
+            @if(config('constants.enable_contact_assign') && $type !== 'lead')
+                <div class="col-md-6">
+                      <div class="form-group">
+                          {!! Form::label('assigned_to_users', __('lang_v1.assigned_to') . ':' ) !!}
+                          <div class="input-group">
+                              <span class="input-group-addon">
+                                  <i class="fa fa-user"></i>
+                              </span>
+                              {!! Form::select('assigned_to_users[]', $users ?? [], null , ['class' => 'form-control select2', 'id' => 'assigned_to_users', 'multiple', 'style' => 'width: 100%;']); !!}
+                          </div>
+                      </div>
+                </div>
+            @endif
+
             <div class="clearfix"></div>
         </div>
         <div class="row">

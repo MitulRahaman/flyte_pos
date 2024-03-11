@@ -1,0 +1,68 @@
+/*# sourceMappingURL=index.css.map */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-inter {
+  font-family: inter;
+}
+.font-robot {
+  font-family: roboto;
+}
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+select {
+  /* for Firefox */
+  appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+  display: none;
+}
+
+.container {
+  padding: 4px;
+}
+
+/** ---------->>>>>>>>>> Swiper CSS Start */
+.swiper {
+  width: 100%;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+}
+/** Swiper CSS End <<<<<<<<<<---------- */
+
+/* For LG Devices */
+@media only screen and (min-width: 1024px) {
+  .container {
+    padding: 5px 4px;
+    margin: 0 auto;
+  }
+}
+
+/* For XL Devices */
+@media only screen and (min-width: 1280px) {
+  .container {
+    padding: 5px 70px;
+  }
+}

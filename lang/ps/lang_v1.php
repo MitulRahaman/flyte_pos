@@ -1356,4 +1356,9 @@ return [
     'kitchen_order_tooltip' => 'په دغه اختیار چی ستایش شوی په صرف د مطبخ ته زده کړی',
     'disable_quotation' => 'غواړی غورځول',
     'disable_card' => 'کارت غواړی غورځول',
+    'assigned_to' => 'غیر مختصر شوی',
+    'has_no_sell_from' => 'د لکه چې پلور شوی نه لري',
+    'delivery_note' => 'د پیرل یادښت',
+    'above_mentioned_items_received_in_good_condition' => 'د پښتو بندګان چې په ښه حالت کې مونږ ته راغلۍ شوې',
+    'received_by' => 'له لارې ملرې',
 ];

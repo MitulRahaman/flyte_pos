@@ -18,7 +18,7 @@
 
 <!-- Main content -->
 <section class="content">
-{!! Form::open(['url' => action('PrinterController@store'), 'method' => 'post', 'id' => 'add_printer_form' ]) !!}
+{!! Form::open(['url' => action([\App\Http\Controllers\PrinterController::class, 'store']), 'method' => 'post', 'id' => 'add_printer_form' ]) !!}
 	<div class="box box-solid">
     <div class="box-body">
       <div class="row">
@@ -78,8 +78,8 @@
           </div>
         </div>
 
-        <div class="col-sm-12">
-          <button type="submit" class="btn btn-primary pull-right">@lang('messages.save')</button>
+        <div class="col-sm-12 text-center">
+          <button type="submit" class="btn btn-primary btn-big">@lang('messages.save')</button>
         </div>
       </div>
     </div>

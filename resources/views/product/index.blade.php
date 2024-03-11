@@ -112,8 +112,11 @@
 
                 <div class="tab-content">
                     <div class="tab-pane active" id="product_list_tab">
-                        @can('product.create')
-                            <a class="btn btn-primary pull-right" href="{{action('ProductController@create')}}">
+                        @if($is_admin)
+                            <a class="btn btn-success pull-right margin-left-10" href="{{action([\App\Http\Controllers\ProductController::class, 'downloadExcel'])}}"><i class="fa fa-download"></i> @lang('lang_v1.download_excel')</a>
+                        @endif
+                        @can('product.create')                            
+                            <a class="btn btn-primary pull-right" href="{{action([\App\Http\Controllers\ProductController::class, 'create'])}}">
                                         <i class="fa fa-plus"></i> @lang('messages.add')</a>
                             <br><br>
                         @endcan
@@ -210,11 +213,13 @@
                         { data: 'brand', name: 'brands.name'},
                         { data: 'tax', name: 'tax_rates.name', searchable: false},
                         { data: 'sku', name: 'products.sku'},
-                        { data: 'product_custom_field1', name: 'products.product_custom_field1'  },
-                        { data: 'product_custom_field2', name: 'products.product_custom_field2'  },
-                        { data: 'product_custom_field3', name: 'products.product_custom_field3'  },
-                        { data: 'product_custom_field4', name: 'products.product_custom_field4'  }
-                        
+                        { data: 'product_custom_field1', name: 'products.product_custom_field1', visible: $('#cf_1').text().length > 0  },
+                        { data: 'product_custom_field2', name: 'products.product_custom_field2' , visible: $('#cf_2').text().length > 0},
+                        { data: 'product_custom_field3', name: 'products.product_custom_field3', visible: $('#cf_3').text().length > 0},
+                        { data: 'product_custom_field4', name: 'products.product_custom_field4', visible: $('#cf_4').text().length > 0 },
+                        { data: 'product_custom_field5', name: 'products.product_custom_field5', visible: $('#cf_5').text().length > 0  },
+                        { data: 'product_custom_field6', name: 'products.product_custom_field6', visible: $('#cf_6').text().length > 0  },
+                        { data: 'product_custom_field7', name: 'products.product_custom_field7', visible: $('#cf_7').text().length > 0  },
                     ],
                     createdRow: function( row, data, dataIndex ) {
                         if($('input#is_rack_enabled').val() == 1){
@@ -258,6 +263,10 @@
                         detailRows.push( tr.attr('id') );
                     }
                 }
+            });
+
+            $('#opening_stock_modal').on('hidden.bs.modal', function(e) {
+                product_table.ajax.reload();
             });
 
             $('table#product_table tbody').on('click', 'a.delete-product', function(e){
@@ -445,12 +454,12 @@
             @endif
         });
 
-        $(document).on('shown.bs.modal', 'div.view_product_modal, div.view_modal', 
+        $(document).on('shown.bs.modal', 'div.view_product_modal, div.view_modal, #view_product_modal', 
             function(){
                 var div = $(this).find('#view_product_stock_details');
             if (div.length) {
                 $.ajax({
-                    url: "{{action('ReportController@getStockReport')}}"  + '?for=view_product&product_id=' + div.data('product_id'),
+                    url: "{{action([\App\Http\Controllers\ReportController::class, 'getStockReport'])}}"  + '?for=view_product&product_id=' + div.data('product_id'),
                     dataType: 'html',
                     success: function(result) {
                         div.html(result);
@@ -466,24 +475,34 @@
                 if (!data_table_initailized) {
                     //Stock report table
                     var stock_report_cols = [
+                        { data: 'action', name: 'action', searchable: false, orderable: false },
                         { data: 'sku', name: 'variations.sub_sku' },
                         { data: 'product', name: 'p.name' },
+                        { data: 'variation', name: 'variation' },
+                        { data: 'category_name', name: 'c.name' },
                         { data: 'location_name', name: 'l.name' },
                         { data: 'unit_price', name: 'variations.sell_price_inc_tax' },
                         { data: 'stock', name: 'stock', searchable: false },
-                        @can('view_product_stock_value')
-                        { data: 'stock_price', name: 'stock_price', searchable: false },
-                        { data: 'stock_value_by_sale_price', name: 'stock_value_by_sale_price', searchable: false, orderable: false },
-                        { data: 'potential_profit', name: 'potential_profit', searchable: false, orderable: false },
-                        @endcan
-                        { data: 'total_sold', name: 'total_sold', searchable: false },
-                        { data: 'total_transfered', name: 'total_transfered', searchable: false },
-                        { data: 'total_adjusted', name: 'total_adjusted', searchable: false }
                     ];
+                    if ($('th.stock_price').length) {
+                        stock_report_cols.push({ data: 'stock_price', name: 'stock_price', searchable: false });
+                        stock_report_cols.push({ data: 'stock_value_by_sale_price', name: 'stock_value_by_sale_price', searchable: false, orderable: false });
+                        stock_report_cols.push({ data: 'potential_profit', name: 'potential_profit', searchable: false, orderable: false });
+                    }
+
+                    stock_report_cols.push({ data: 'total_sold', name: 'total_sold', searchable: false });
+                    stock_report_cols.push({ data: 'total_transfered', name: 'total_transfered', searchable: false });
+                    stock_report_cols.push({ data: 'total_adjusted', name: 'total_adjusted', searchable: false });
+                    stock_report_cols.push({ data: 'product_custom_field1', name: 'p.product_custom_field1'});
+                    stock_report_cols.push({ data: 'product_custom_field2', name: 'p.product_custom_field2'});
+                    stock_report_cols.push({ data: 'product_custom_field3', name: 'p.product_custom_field3'});
+                    stock_report_cols.push({ data: 'product_custom_field4', name: 'p.product_custom_field4'});
+
                     if ($('th.current_stock_mfg').length) {
                         stock_report_cols.push({ data: 'total_mfg_stock', name: 'total_mfg_stock', searchable: false });
                     }
                     stock_report_table = $('#stock_report_table').DataTable({
+                        order: [[1, 'asc']],
                         processing: true,
                         serverSide: true,
                         scrollY: "75vh",

@@ -7,7 +7,7 @@
 <div class="modal-dialog" role="document">
   <div class="modal-content">
 
-    {!! Form::open(['url' => $notification_template['template_for'] == 'send_ledger' ? action('ContactController@sendLedger') : action('NotificationController@send'), 'method' => 'post', 'id' => 'send_notification_form' ]) !!}
+    {!! Form::open(['url' => $notification_template['template_for'] == 'send_ledger' ? action([\App\Http\Controllers\ContactController::class, 'sendLedger']) : action([\App\Http\Controllers\NotificationController::class, 'send']), 'method' => 'post', 'id' => 'send_notification_form' ]) !!}
 
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -16,7 +16,8 @@
 
     <div class="modal-body">
         <div>
-            <strong>@lang('lang_v1.available_tags'):</strong> <p class="help-block">{{implode(', ', $tags)}}</p>
+            <strong>@lang('lang_v1.available_tags'):</strong> 
+            @include('notification_template.partials.tags', ['tags' => $tags])
         </div>
         <div class="box-group" id="accordion">
             {{-- email --}}
@@ -30,6 +31,12 @@
               </div>
               <div id="email_collapse" class="panel-collapse collapse in" aria-expanded="true">
                 <div class="box-body">
+                    @if($notification_template['template_for'] == 'send_ledger')
+                        <div class="form-group">
+                            {!! Form::label('ledger_format', __('lang_v1.ledger_format').':') !!}
+                            {!! Form::select('ledger_format', ['format_1' => __('lang_v1.format_1'), 'format_2' => __('lang_v1.format_2')], $ledger_format, ['class' => 'form-control']); !!}
+                        </div>
+                    @endif
                     <div class="form-group @if($notification_template['template_for'] == 'send_ledger') hide @endif">
                         <label>
                           {!! Form::checkbox('notification_type[]', 'email', true, ['class' => 'input-icheck notification_type']); !!} @lang('lang_v1.send_email')
@@ -117,6 +124,7 @@
             {!! Form::hidden('contact_id', $contact->id); !!}
             {!! Form::hidden('start_date', $start_date); !!}
             {!! Form::hidden('end_date', $end_date); !!}
+            {!! Form::hidden('location_id', $location_id); !!}
         @endif
         {!! Form::hidden('template_for', $notification_template['template_for']); !!}
         <div class="modal-footer">

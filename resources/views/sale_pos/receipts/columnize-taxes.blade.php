@@ -2,7 +2,7 @@
 	$totals = ['taxable_value' => 0];
 @endphp
 
-<table style="width:100%;">
+<table style="width:100%; color: #000000 !important;">
 	<thead>
 		<tr>
 			<td class="pull-right">
@@ -19,25 +19,35 @@
 
 	<tbody>
 		<tr>
-			<td class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
-				@if(!empty($receipt_details->header_text))
-					{!! $receipt_details->header_text !!}
+				<td class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
+				@if(empty($receipt_details->letter_head))
+					@if(!empty($receipt_details->header_text))
+						{!! $receipt_details->header_text !!}
+					@endif
+
+					@php
+						$sub_headings = implode('<br/>', array_filter([$receipt_details->sub_heading_line1, $receipt_details->sub_heading_line2, $receipt_details->sub_heading_line3, $receipt_details->sub_heading_line4, $receipt_details->sub_heading_line5]));
+					@endphp
+
+					@if(!empty($sub_headings))
+						<span>{!! $sub_headings !!}</span>
+					@endif
+
 				@endif
 
-				@php
-					$sub_headings = implode('<br/>', array_filter([$receipt_details->sub_heading_line1, $receipt_details->sub_heading_line2, $receipt_details->sub_heading_line3, $receipt_details->sub_heading_line4, $receipt_details->sub_heading_line5]));
-				@endphp
-
-				@if(!empty($sub_headings))
-					<span>{!! $sub_headings !!}</span>
+					@if(!empty($receipt_details->invoice_heading))
+						<p  style="font-weight: bold; font-size: 35px !important; line-height: 1;">{!! $receipt_details->invoice_heading !!}</p>
+					@endif
+				</td>
+			</tr>
+			
+				@if(!empty($receipt_details->letter_head))
+				<tr>
+					<td>
+						<img style="width: 100%;margin-bottom: 10px;" src="{{$receipt_details->letter_head}}">
+					</td>
+				</tr>
 				@endif
-
-				@if(!empty($receipt_details->invoice_heading))
-					<p class="" style="font-weight: bold; font-size: 35px !important">{!! $receipt_details->invoice_heading !!}</p>
-				@endif
-			</td>
-		</tr>
-
 		<tr>
 			<td>
 
@@ -77,14 +87,14 @@
 		
 		<!-- Total Paid-->
 		@if(!empty($receipt_details->total_paid))
-			<div class="text-right font-23 color-555">
+			<div class="text-right font-23 ">
 				<span class="pull-left">{!! $receipt_details->total_paid_label !!}</span>
 				{{$receipt_details->total_paid}}
 			</div>
 		@endif
 		<!-- Date-->
 		@if(!empty($receipt_details->date_label))
-			<div class="text-right font-23 color-555">
+			<div class="text-right font-23 ">
 				<span class="pull-left">
 					{{$receipt_details->date_label}}
 				</span>
@@ -93,7 +103,7 @@
 			</div>
 		@endif
 		@if(!empty($receipt_details->due_date_label))
-			<div class="text-right font-23 color-555">
+			<div class="text-right font-23 ">
 				<span class="pull-left">
 					{{$receipt_details->due_date_label}}
 				</span>
@@ -101,6 +111,45 @@
 				{{$receipt_details->due_date ?? ''}}
 			</div>
 		@endif
+
+		@if(!empty($receipt_details->sell_custom_field_1_value))
+			<div class="text-right font-23 ">
+				<span class="pull-left">
+					{{$receipt_details->sell_custom_field_1_label}}
+				</span>
+
+				{{$receipt_details->sell_custom_field_1_value ?? ''}}
+			</div>
+		@endif
+		@if(!empty($receipt_details->sell_custom_field_2_value))
+			<div class="text-right font-23 ">
+				<span class="pull-left">
+					{{$receipt_details->sell_custom_field_2_label}}
+				</span>
+
+				{{$receipt_details->sell_custom_field_2_value ?? ''}}
+			</div>
+		@endif
+		@if(!empty($receipt_details->sell_custom_field_3_value))
+			<div class="text-right font-23 ">
+				<span class="pull-left">
+					{{$receipt_details->sell_custom_field_3_label}}
+				</span>
+
+				{{$receipt_details->sell_custom_field_3_value ?? ''}}
+			</div>
+		@endif
+		@if(!empty($receipt_details->sell_custom_field_4_value))
+			<div class="text-right font-23 ">
+				<span class="pull-left">
+					{{$receipt_details->sell_custom_field_4_label}}
+				</span>
+
+				{{$receipt_details->sell_custom_field_4_value ?? ''}}
+			</div>
+		@endif
+
+		
 
 		<div class="word-wrap">
 			@if(!empty($receipt_details->customer_label))
@@ -155,18 +204,20 @@
 
 	</div>
 
-	<div class="col-md-6 invoice-col width-50 color-555">
-		
-		<!-- Logo -->
-		@if(!empty($receipt_details->logo))
-			<img style="max-height: 120px; width: auto;" src="{{$receipt_details->logo}}" class="img center-block">
-			<br/>
-		@endif
+	<div class="col-md-6 invoice-col width-50 ">
+		@if(empty($receipt_details->letter_head))
+			<!-- Logo -->
+			@if(!empty($receipt_details->logo))
+				<img style="max-height: 120px; width: auto;" src="{{$receipt_details->logo}}" class="img center-block">
+				<br/>
+			@endif
 
-		<!-- Shop & Location Name  -->
-		@if(!empty($receipt_details->display_name))
+			<!-- Shop & Location Name  -->
 			<p>
-				{{$receipt_details->display_name}}
+				@if(!empty($receipt_details->display_name))
+					{{$receipt_details->display_name}}
+					<br/>
+				@endif
 				@if(!empty($receipt_details->address))
 					<br/>{!! $receipt_details->address !!}
 				@endif
@@ -217,7 +268,7 @@
 
         <div class="word-wrap">
 
-			<p class="text-right color-555">
+			<p class="text-right ">
 
 			@if(!empty($receipt_details->brand_label) || !empty($receipt_details->repair_brand))
 				@if(!empty($receipt_details->brand_label))
@@ -327,7 +378,7 @@
 <div class="row">
 	@includeIf('sale_pos.receipts.partial.common_repair_invoice')
 </div>
-<div class="row color-555">
+<div class="row ">
 	<div class="col-xs-12">
 		<br/>
 		<table class="table table-bordered table-no-top-cell-border table-slim">
@@ -349,6 +400,11 @@
 					<td style="background-color: #357ca5 !important; color: white !important;" class="text-right">
 						{!! $receipt_details->table_unit_price_label !!} <span class="small color-white"> ({{$receipt_details->currency['symbol']}})</span>
 					</td>
+					@if(!empty($receipt_details->discounted_unit_price_label))
+					<td style="background-color: #357ca5 !important; color: white !important;">
+						{{$receipt_details->discounted_unit_price_label}}
+					</td>
+					@endif
 					@if(!empty($receipt_details->item_discount_label))
 					<td style="background-color: #357ca5 !important; color: white !important;">
 						{!! $receipt_details->item_discount_label !!}
@@ -389,10 +445,15 @@
 							@endif
                             {{$line['name']}} {{$line['product_variation']}} {{$line['variation']}} 
                             @if(!empty($line['sub_sku'])), {{$line['sub_sku']}} @endif @if(!empty($line['brand'])), {{$line['brand']}} @endif
+                            @if(!empty($line['product_description']))
+                            	<small>
+                            		{!!$line['product_description']!!}
+                            	</small>
+                            @endif 
                             @if(!empty($line['sell_line_note']))
                             <br>
                             <small class="text-muted">
-                            {{$line['sell_line_note']}}
+                            {!!$line['sell_line_note']!!}
                         	</small>
                             @endif
                             @if(!empty($line['lot_number']))<br> {{$line['lot_number_label']}}:  {{$line['lot_number']}} @endif 
@@ -400,6 +461,13 @@
 
                             @if(!empty($line['warranty_name'])) <br><small>{{$line['warranty_name']}} </small>@endif @if(!empty($line['warranty_exp_date'])) <small>- {{@format_date($line['warranty_exp_date'])}} </small>@endif
                             @if(!empty($line['warranty_description'])) <small> {{$line['warranty_description'] ?? ''}}</small>@endif
+
+                            @if($receipt_details->show_base_unit_details && $line['quantity'] && $line['base_unit_multiplier'] !== 1)
+                            <br><small>
+                            	1 {{$line['units']}} = {{$line['base_unit_multiplier']}} {{$line['base_unit_name']}} <br>
+                            	{{$line['base_unit_price']}} x {{$line['orig_quantity']}} = {{$line['line_total']}}
+                            </small>
+                            @endif
                         </td>
 
 						@if($receipt_details->show_cat_code == 1)
@@ -412,13 +480,28 @@
 
 						<td class="text-right">
 							{{$line['quantity']}} {{$line['units']}}
+
+							@if($receipt_details->show_base_unit_details && $line['quantity'] && $line['base_unit_multiplier'] !== 1)
+                            <br><small>
+                            	{{$line['quantity']}} x {{$line['base_unit_multiplier']}} = {{$line['orig_quantity']}} {{$line['base_unit_name']}}
+                            </small>
+                            @endif
 						</td>
 						<td class="text-right">
 							{{$line['unit_price_before_discount']}}
 						</td>
+						@if(!empty($receipt_details->discounted_unit_price_label))
+							<td class="text-right">
+								{{$line['unit_price_inc_tax']}} 
+							</td>
+						@endif
 						@if(!empty($receipt_details->item_discount_label))
 						<td class="text-right">
-							{{$line['line_discount']}}
+							{{$line['total_line_discount'] ?? 00}}
+
+							@if(!empty($line['line_discount_percent']))
+								 ({{$line['line_discount_percent']}}%)
+							@endif
 						</td>
 						@endif
 						<td class="text-right">
@@ -498,7 +581,7 @@
 								<td>
 		                            {{$modifier['name']}} {{$modifier['variation']}} 
 		                            @if(!empty($modifier['sub_sku'])), {{$modifier['sub_sku']}} @endif 
-		                            @if(!empty($modifier['sell_line_note']))({{$modifier['sell_line_note']}}) @endif 
+		                            @if(!empty($modifier['sell_line_note']))({!!$modifier['sell_line_note']!!}) @endif 
 		                        </td>
 
 								@if($receipt_details->show_cat_code == 1)
@@ -544,6 +627,9 @@
     					<td>&nbsp;</td>
     					<td>&nbsp;</td>
     					<td>&nbsp;</td>
+    					@if(!empty($receipt_details->discounted_unit_price_label))
+							<td>&nbsp;</td>
+						@endif
     					@if(!empty($receipt_details->item_discount_label))
     					<td>&nbsp;</td>
     					@endif
@@ -563,6 +649,12 @@
 						$colspan = 4;
 					@endphp
 					@if($receipt_details->show_cat_code == 1)
+						@php
+							$colspan += 1;
+						@endphp
+					@endif
+
+					@if(!empty($receipt_details->discounted_unit_price_label))
 						@php
 							$colspan += 1;
 						@endphp
@@ -606,7 +698,7 @@
 	</div>
 </div>
 
-<div class="row invoice-info color-555" style="page-break-inside: avoid !important">
+<div class="row invoice-info " style="page-break-inside: avoid !important">
 	<div class="col-md-6 invoice-col width-50">
 		<table class="table table-slim">
 			@if(!empty($receipt_details->payments))
@@ -626,7 +718,7 @@
 		<table class="table-no-side-cell-border table-no-top-cell-border width-100 table-slim">
 			<tbody>
 				@if(!empty($receipt_details->total_quantity_label))
-					<tr class="color-555">
+					<tr >
 						<td style="width:50%">
 							{!! $receipt_details->total_quantity_label !!}
 						</td>
@@ -635,7 +727,17 @@
 						</td>
 					</tr>
 				@endif
-				<tr class="color-555">
+				@if(!empty($receipt_details->total_items_label))
+					<tr >
+						<td style="width:50%">
+							{!! $receipt_details->total_items_label !!}
+						</td>
+						<td class="text-right">
+							{{$receipt_details->total_items}}
+						</td>
+					</tr>
+				@endif
+				<tr >
 					<td style="width:50%">
 						{!! $receipt_details->subtotal_label !!}
 					</td>
@@ -646,7 +748,7 @@
 				
 				<!-- Shipping Charges -->
 				@if(!empty($receipt_details->shipping_charges))
-					<tr class="color-555">
+					<tr >
 						<td style="width:50%">
 							{!! $receipt_details->shipping_charges_label !!}
 						</td>
@@ -658,7 +760,7 @@
 
 				<!-- Packing Charges -->
 				@if(!empty($receipt_details->packing_charge))
-					<tr class="color-555">
+					<tr >
 						<td style="width:50%">
 							{!! $receipt_details->packing_charge_label !!}
 						</td>
@@ -670,7 +772,7 @@
 
 				<!-- Discount -->
 				@if( !empty($receipt_details->discount) )
-					<tr class="color-555">
+					<tr >
 						<td>
 							{!! $receipt_details->discount_label !!}
 						</td>
@@ -682,7 +784,7 @@
 				@endif
 
 				@if( !empty($receipt_details->total_line_discount) )
-					<tr class="color-555">
+					<tr >
 						<td>
 							{!! $receipt_details->line_discount_label !!}
 						</td>
@@ -695,7 +797,7 @@
 
 				@if( !empty($receipt_details->additional_expenses) )
 					@foreach($receipt_details->additional_expenses as $key => $val)
-						<tr class="color-555">
+						<tr >
 							<td>
 								{{$key}}:
 							</td>
@@ -708,7 +810,7 @@
 				@endif
 
 				@if( !empty($receipt_details->reward_point_label) )
-					<tr class="color-555">
+					<tr >
 						<td>
 							{!! $receipt_details->reward_point_label !!}
 						</td>
@@ -721,7 +823,7 @@
 
 				@if(!empty($receipt_details->group_tax_details))
 					@foreach($receipt_details->group_tax_details as $key => $value)
-						<tr class="color-555">
+						<tr >
 							<td>
 								{!! $key !!}
 							</td>
@@ -732,7 +834,7 @@
 					@endforeach
 				@else
 					@if( !empty($receipt_details->tax) )
-						<tr class="color-555">
+						<tr >
 							<td>
 								{!! $receipt_details->tax_label !!}
 							</td>
@@ -744,7 +846,7 @@
 				@endif
 				
 				@if( $receipt_details->round_off_amount > 0)
-					<tr class="color-555">
+					<tr >
 						<td>
 							{!! $receipt_details->round_off_label !!}
 						</td>
@@ -795,7 +897,7 @@
 </div>
 
 @if(!empty($receipt_details->additional_notes))
-	<div class="row color-555">
+	<div class="row ">
 		<div class="col-xs-12">
 			<br>
 			<p>{!! nl2br($receipt_details->additional_notes) !!}</p>
@@ -803,7 +905,7 @@
 	</div>
 @endif
 
-<div class="row color-555">
+<div class="row">
 		@if(!empty($receipt_details->footer_text))
 		<div class="@if($receipt_details->show_barcode || $receipt_details->show_qr_code) col-xs-8 @else col-xs-12 @endif">
 			{!! $receipt_details->footer_text !!}

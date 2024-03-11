@@ -1350,4 +1350,9 @@ return [
     'kitchen_order_tooltip' => 'Bu seçenek işaretlendiğinde sipariş sadece mutfağa gönderilir',
     'disable_quotation' => 'Teklifi Devre Dışı Bırak',
     'disable_card' => 'Kartı Devre Dışı Bırak',
+    'assigned_to' => 'Atanmış kişi',
+    'has_no_sell_from' => 'Satışı yok',
+    'delivery_note' => 'Teslimat Notu',
+    'above_mentioned_items_received_in_good_condition' => 'Yukarıda bahsedilen ürünler iyi durumda alındı',
+    'received_by' => 'Tarafından alındı',
 ];

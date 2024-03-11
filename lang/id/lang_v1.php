@@ -1348,4 +1348,9 @@ return [
     'kitchen_order_tooltip' => 'Pesanan akan dikirim ke dapur hanya jika opsi ini dicentang',
     'disable_quotation' => 'Nonaktifkan Penawaran',
     'disable_card' => 'Nonaktifkan Kartu',
+    'assigned_to' => 'Ditugaskan kepada',
+    'has_no_sell_from' => 'Tidak ada penjualan dari',
+    'delivery_note' => 'Catatan Pengiriman',
+    'above_mentioned_items_received_in_good_condition' => 'Item yang disebutkan di atas diterima dalam kondisi baik',
+    'received_by' => 'Diterima oleh',
 ];

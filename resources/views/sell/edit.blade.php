@@ -25,7 +25,7 @@
 	$common_settings = session()->get('business.common_settings');
 @endphp
 <input type="hidden" id="item_addition_method" value="{{$business_details->item_addition_method}}">
-	{!! Form::open(['url' => action('SellPosController@update', ['id' => $transaction->id ]), 'method' => 'put', 'id' => 'edit_sell_form', 'files' => true ]) !!}
+	{!! Form::open(['url' => action([\App\Http\Controllers\SellPosController::class, 'update'], ['po' => $transaction->id ]), 'method' => 'put', 'id' => 'edit_sell_form', 'files' => true ]) !!}
 
 	{!! Form::hidden('location_id', $transaction->location_id, ['id' => 'location_id', 'data-receipt_printer_type' => !empty($location_printer_type) ? $location_printer_type : 'browser', 'data-default_payment_accounts' => $transaction->location->default_payment_accounts]); !!}
 
@@ -128,25 +128,31 @@
 				<div class="col-md-3">
 		          <div class="form-group">
 		            <div class="multi-input">
+		            	@php
+							$is_pay_term_required = !empty($pos_settings['is_pay_term_required']);
+						@endphp
 		              {!! Form::label('pay_term_number', __('contact.pay_term') . ':') !!} @show_tooltip(__('tooltip.pay_term'))
 		              <br/>
-		              {!! Form::number('pay_term_number', $transaction->pay_term_number, ['class' => 'form-control width-40 pull-left', 'placeholder' => __('contact.pay_term')]); !!}
+		              {!! Form::number('pay_term_number', $transaction->pay_term_number, ['class' => 'form-control width-40 pull-left', 'placeholder' => __('contact.pay_term'), 'required' => $is_pay_term_required]); !!}
 
 		              {!! Form::select('pay_term_type', 
 		              	['months' => __('lang_v1.months'), 
 		              		'days' => __('lang_v1.days')], 
 		              		$transaction->pay_term_type, 
-		              	['class' => 'form-control width-60 pull-left','placeholder' => __('messages.please_select')]); !!}
+		              	['class' => 'form-control width-60 pull-left','placeholder' => __('messages.please_select'), 'required' => $is_pay_term_required]); !!}
 		            </div>
 		          </div>
 		        </div>
 
 				@if(!empty($commission_agent))
+				@php
+					$is_commission_agent_required = !empty($pos_settings['is_commission_agent_required']);
+				@endphp
 				<div class="col-sm-3">
 					<div class="form-group">
 					{!! Form::label('commission_agent', __('lang_v1.commission_agent') . ':') !!}
 					{!! Form::select('commission_agent', 
-								$commission_agent, $transaction->commission_agent, ['class' => 'form-control select2']); !!}
+								$commission_agent, $transaction->commission_agent, ['class' => 'form-control select2', 'id' => 'commission_agent', 'required' => $is_commission_agent_required]); !!}
 					</div>
 				</div>
 				@endif
@@ -310,7 +316,7 @@
 							'autofocus' => true,
 							]); !!}
 							<span class="input-group-btn">
-								<button type="button" class="btn btn-default bg-white btn-flat pos_add_quick_product" data-href="{{action('ProductController@quickAdd')}}" data-container=".quick_add_product_modal"><i class="fa fa-plus-circle text-primary fa-lg"></i></button>
+								<button type="button" class="btn btn-default bg-white btn-flat pos_add_quick_product" data-href="{{action([\App\Http\Controllers\ProductController::class, 'quickAdd'])}}" data-container=".quick_add_product_modal"><i class="fa fa-plus-circle text-primary fa-lg"></i></button>
 							</span>
 						</div>
 					</div>
@@ -362,7 +368,7 @@
 								<th class="text-center">
 									@lang('sale.subtotal')
 								</th>
-								<th class="text-center"><i class="fa fa-close" aria-hidden="true"></i></th>
+								<th class="text-center"><i class="fas fa-times" aria-hidden="true"></i></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -455,7 +461,7 @@
 			                {!! Form::select('tax_rate_id', $taxes['tax_rates'], $transaction->tax_id, ['placeholder' => __('messages.please_select'), 'class' => 'form-control', 'data-default'=> $business_details->default_sales_tax], $taxes['attributes']); !!}
 
 							<input type="hidden" name="tax_calculation_amount" id="tax_calculation_amount" 
-							value="{{@num_format(optional($transaction->tax)->amount)}}" data-default="{{$business_details->tax_calculation_amount}}">
+							value="{{@num_format($transaction->tax?->amount)}}" data-default="{{$business_details->tax_calculation_amount}}">
 			            </div>
 			        </div>
 			    </div>
@@ -509,6 +515,12 @@
 		            {!! Form::text('delivered_to', $transaction->delivered_to, ['class' => 'form-control','placeholder' => __('lang_v1.delivered_to')]); !!}
 		        </div>
 		    </div>
+			<div class="col-md-4">
+				<div class="form-group">
+					{!! Form::label('delivery_person', __('lang_v1.delivery_person') . ':' ) !!}
+					{!! Form::select('delivery_person', $users, $transaction->delivery_person, ['class' => 'form-control select2','placeholder' => __('messages.please_select')]); !!}
+				</div>
+			</div>
 		    @php
 		        $shipping_custom_label_1 = !empty($custom_labels['shipping']['custom_field_1']) ? $custom_labels['shipping']['custom_field_1'] : '';
 
@@ -743,7 +755,7 @@
 	@if($transaction->type = 'sell')
 	@can('sell.payments')
 		@component('components.widget', ['class' => 'box-solid', 'title' => __('purchase.add_payment')])
-			<div class="payment_row" id="payment_rows_div">
+		<div class="row">
 			@foreach($payment_lines as $payment_line)			
 				@if($payment_line['is_return'] == 1)
 					@php
@@ -756,10 +768,11 @@
 				@if(!empty($payment_line['id']))
         			{!! Form::hidden("payment[$loop->index][payment_id]", $payment_line['id']); !!}
         		@endif
-
-				@include('sale_pos.partials.payment_row_form', ['row_index' => $loop->index, 'show_date' => true, 'payment_line' => $payment_line])
-			@endforeach
-			</div>
+				<div class="payment_row" id="payment_rows_div">
+					@include('sale_pos.partials.payment_row_form', ['row_index' => $loop->index, 'show_date' => true, 'payment_line' => $payment_line, 'show_denomination' => true])
+				</div>
+				@endforeach
+			
 
 			<div class="col-md-12">
         		<hr>
@@ -775,6 +788,42 @@
             		value="{{$change_return['id']}}">
             	@endif
 			</div>
+		</div>
+		<div class="row @if($change_return['amount'] == 0) hide @endif payment_row" id="change_return_payment_data">
+			<div class="col-md-4">
+				<div class="form-group">
+					{!! Form::label("change_return_method" , __('lang_v1.change_return_payment_method') . ':*') !!}
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="fas fa-money-bill-alt"></i>
+						</span>
+						@php
+							$_payment_method = empty($change_return['method']) && array_key_exists('cash', $payment_types) ? 'cash' : $change_return['method'];
+
+							$_payment_types = $payment_types;
+							if(isset($_payment_types['advance'])) {
+								unset($_payment_types['advance']);
+							}
+						@endphp
+						{!! Form::select("payment[change_return][method]", $_payment_types, $_payment_method, ['class' => 'form-control col-md-12 payment_types_dropdown', 'id' => 'change_return_method', 'style' => 'width:100%;']); !!}
+					</div>
+				</div>
+			</div>
+			@if(!empty($accounts))
+			<div class="col-md-4">
+				<div class="form-group">
+					{!! Form::label("change_return_account" , __('lang_v1.change_return_payment_account') . ':') !!}
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="fas fa-money-bill-alt"></i>
+						</span>
+						{!! Form::select("payment[change_return][account_id]", $accounts, !empty($change_return['account_id']) ? $change_return['account_id'] : '' , ['class' => 'form-control select2', 'id' => 'change_return_account', 'style' => 'width:100%;']); !!}
+					</div>
+				</div>
+			</div>
+			@endif
+			@include('sale_pos.partials.payment_type_details', ['payment_line' => $change_return, 'row_index' => 'change_return'])
+		</div>
 		@endcomponent
 	@endcan
 	@endif

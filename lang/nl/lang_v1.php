@@ -1344,4 +1344,9 @@ return [
     'kitchen_order_tooltip' => 'De bestelling wordt alleen naar de keuken gestuurd als deze optie is aangevinkt',
     'disable_quotation' => 'Offerte uitschakelen',
     'disable_card' => 'Kaart uitschakelen',
+    'assigned_to' => 'Toegewezen aan',
+    'has_no_sell_from' => 'Heeft geen verkoop van',
+    'delivery_note' => 'Afleveringsbon',
+    'above_mentioned_items_received_in_good_condition' => 'Bovenstaande vermelde items ontvangen in goede staat',
+    'received_by' => 'Ontvangen door',
 ];

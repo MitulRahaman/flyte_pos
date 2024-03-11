@@ -1346,4 +1346,9 @@ return [
     'kitchen_order_tooltip' => 'La commande sera envoyée à la cuisine uniquement si cette option est cochée',
     'disable_quotation' => 'Désactiver le devis',
     'disable_card' => 'Désactiver la carte',
+    'assigned_to' => 'Assigné à',
+    'has_no_sell_from' => "N'a pas de vente depuis",
+    'delivery_note' => 'Bon de livraison',
+    'above_mentioned_items_received_in_good_condition' => 'Les articles mentionnés ci-dessus ont été reçus en bon état',
+    'received_by' => 'Reçu par',
 ];

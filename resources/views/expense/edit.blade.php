@@ -10,7 +10,7 @@
 
 <!-- Main content -->
 <section class="content">
-  {!! Form::open(['url' => action('ExpenseController@update', [$expense->id]), 'method' => 'PUT', 'id' => 'add_expense_form', 'files' => true ]) !!}
+  {!! Form::open(['url' => action([\App\Http\Controllers\ExpenseController::class, 'update'], [$expense->id]), 'method' => 'PUT', 'id' => 'add_expense_form', 'files' => true ]) !!}
   <div class="box box-solid">
     <div class="box-body">
       <div class="row">
@@ -25,6 +25,12 @@
             {!! Form::label('expense_category_id', __('expense.expense_category').':') !!}
             {!! Form::select('expense_category_id', $expense_categories, $expense->expense_category_id, ['class' => 'form-control select2', 'placeholder' => __('messages.please_select')]); !!}
           </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                {!! Form::label('expense_sub_category_id', __('product.sub_category')  . ':') !!}
+                  {!! Form::select('expense_sub_category_id', $sub_categories, $expense->expense_sub_category_id, ['placeholder' => __('messages.please_select'), 'class' => 'form-control select2']); !!}
+            </div>
         </div>
         <div class="col-sm-4">
           <div class="form-group">

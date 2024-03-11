@@ -4,7 +4,7 @@
 
 <div class="row">
 
-    <h1 class="page-header text-center">{{ config('app.name', 'ultimatePOS') }}</h2>
+    <h1 class="page-header text-center">{{ config('app.name', 'flytePOS') }}</h2>
     
     <div class="col-md-8 col-md-offset-2">
         
@@ -13,8 +13,8 @@
                 <h3 class="box-title text-center">Register and Get Started in minutes</h3>
             </div>
 
-            {!! Form::open(['url' => {{ route('business.postRegister') }}]) !!}
-            {!! Form::token(); !!}
+            {!! Form::open(['url' => route('business.postRegister')]) !!}
+            {!! Form::token() !!}
 
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -259,7 +259,7 @@
                 <!-- /.box-body -->
                 
                 <div class="box-footer">
-                    <button type="button" class="btn btn-success pull-right">Register</button>
+                    <button type="submit" class="btn btn-success pull-right">Register</button>
                 </div>
 
             {!! Form::close() !!}

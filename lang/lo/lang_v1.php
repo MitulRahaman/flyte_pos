@@ -1416,4 +1416,9 @@ return [
     'kitchen_order_tooltip' => 'ການສັ່ງຊື້ຈະຖືກສົ່ງເຂົ້າລະບົບການຂະຫນາດສາມາດຈາກຄວາມຕ່າງກັນລະບົບນີ້ຖ້າພາກພືກເລືອກສຳເລັດ',
     'disable_quotation' => 'ປິດການເອົາເອກະສານ',
     'disable_card' => 'ປິດການເອກະສານ',
+    'assigned_to' => 'ຖືກມອບມາ',
+    'has_no_sell_from' => 'ບໍ່ມີການຂາຍຈາກ',
+    'delivery_note' => 'ໝາຍການຈັດສົ່ງ',
+    'above_mentioned_items_received_in_good_condition' => 'ລາຍການທີ່ເລີຍບັນຊີກ່ຽວກັບແຊບ',
+    'received_by' => 'ແລ້ວໄດ້ຮັບແລ້ວ',
 ];

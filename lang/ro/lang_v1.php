@@ -1384,4 +1384,9 @@ return [
     'kitchen_order_tooltip' => 'Comanda va fi trimisă la bucătărie doar dacă această opțiune este bifată',
     'disable_quotation' => 'Dezactivați Oferta',
     'disable_card' => 'Dezactivați Cardul',
+    'assigned_to' => 'Alocat către',
+    'has_no_sell_from' => 'Nu are vânzări de la',
+    'delivery_note' => 'Nota de livrare',
+    'above_mentioned_items_received_in_good_condition' => 'Articolele menționate mai sus au fost primite în stare bună',
+    'received_by' => 'Primit de',
 ];

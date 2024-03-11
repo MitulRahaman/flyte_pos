@@ -18,7 +18,7 @@
 
 <!-- Main content -->
 <section class="content">
-    @component('components.filters', ['title' => __('report.filters'), 'class' => 'hide'])
+    @component('components.filters', ['title' => __('report.filters')])
     @if($type == 'customer')
         <div class="col-md-3">
             <div class="form-group">
@@ -64,6 +64,37 @@
             </label>
         </div>
     </div>
+    @if($type == 'customer')
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="has_no_sell_from">@lang('lang_v1.has_no_sell_from'):</label>
+                {!! Form::select('has_no_sell_from', ['one_month' => __('lang_v1.one_month'), 'three_months' => __('lang_v1.three_months'), 'six_months' => __('lang_v1.six_months'), 'one_year' => __('lang_v1.one_year')], null, ['class' => 'form-control', 'id' => 'has_no_sell_from', 'placeholder' => __('messages.please_select')]); !!}
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="cg_filter">@lang('lang_v1.customer_group'):</label>
+                {!! Form::select('cg_filter', $customer_groups, null, ['class' => 'form-control', 'id' => 'cg_filter']); !!}
+            </div>
+        </div>
+    @endif
+
+    @if(config('constants.enable_contact_assign') === true)
+    <div class="col-md-3">
+        <div class="form-group">
+            {!! Form::label('assigned_to',  __('lang_v1.assigned_to') . ':') !!}
+            {!! Form::select('assigned_to', $users, null, ['class' => 'form-control select2', 'style' => 'width:100%']); !!}
+        </div>
+    </div>
+    @endif
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="status_filter">@lang('sale.status'):</label>
+            {!! Form::select('status_filter', ['active' => __('business.is_active'), 'inactive' => __('lang_v1.inactive')], null, ['class' => 'form-control', 'id' => 'status_filter', 'placeholder' => __('lang_v1.none')]); !!}
+        </div>
+    </div>
     @endcomponent
     <input type="hidden" value="{{$type}}" id="contact_type">
     @component('components.widget', ['class' => 'box-primary', 'title' => __( 'contact.all_your_contact', ['contacts' => __('lang_v1.'.$type.'s') ])])
@@ -71,7 +102,7 @@
             @slot('tool')
                 <div class="box-tools">
                     <button type="button" class="btn btn-block btn-primary btn-modal" 
-                    data-href="{{action('ContactController@create', ['type' => $type])}}" 
+                    data-href="{{action([\App\Http\Controllers\ContactController::class, 'create'], ['type' => $type])}}" 
                     data-container=".contact_modal">
                     <i class="fa fa-plus"></i> @lang('messages.add')</button>
                 </div>

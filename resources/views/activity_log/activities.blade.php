@@ -18,6 +18,10 @@
                     <br>
                     <span class="label bg-gray">{{$activity->getExtraProperty('from_api')}}</span>
                 @endif
+
+                @if(!empty($activity->getExtraProperty('is_automatic')))
+                    <span class="label bg-gray">@lang('lang_v1.automatic')</span>
+                @endif
             </td>
             <td>
                 @if(!empty($activity_type))
@@ -36,6 +40,14 @@
                             {{$update_note}}
                         @endif
                     @endif
+                @endif
+
+                @if(!empty($activity->getExtraProperty('email')))
+                    <b>@lang('business.email'): </b> {{$activity->getExtraProperty('email')}}
+                @endif
+
+                @if(!empty($activity->getExtraProperty('mobile')))
+                    <b>@lang('business.mobile'): </b> {{$activity->getExtraProperty('mobile')}}
                 @endif
             </td>
         </tr>

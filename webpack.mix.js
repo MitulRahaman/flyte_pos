@@ -11,7 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js/init.js')
+mix.js('resources/js/app.js', 'public/js/init.js').vue()
     .sass('resources/sass/app.scss', 'public/css/init.css')
     .combine([
       'public/js/init.js',
@@ -80,4 +80,5 @@ mix.js('resources/js/app.js', 'public/js/init.js')
     .copy('resources/plugins/bootstrap/fonts/glyphicons-halflings-regular.ttf', 'public/fonts/')
     .copy('resources/plugins/ionicons/fonts/ionicons.ttf', 'public/fonts/ionicons.ttf')
     .copyDirectory('node_modules/tinymce/skins/', 'public/js/skins/')
+    .copyDirectory('node_modules/tinymce/icons/', 'public/js/icons/')
     .setResourceRoot('../');

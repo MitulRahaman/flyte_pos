@@ -1345,4 +1345,9 @@ return [
     'kitchen_order_tooltip' => 'Die Bestellung wird nur an die Küche gesendet, wenn diese Option aktiviert ist',
     'disable_quotation' => 'Angebot deaktivieren',
     'disable_card' => 'Karte deaktivieren',
+    'assigned_to' => 'Ditugaskan kepada',
+    'has_no_sell_from' => 'Tidak ada penjualan dari',
+    'delivery_note' => 'Lieferschein',
+    'above_mentioned_items_received_in_good_condition' => 'Die oben genannten Artikel wurden in gutem Zustand erhalten',
+    'received_by' => 'Empfangen von',
 ];

@@ -50,6 +50,7 @@
 @endphp
 
 <script>
+    Dropzone.autoDiscover = false;
     moment.tz.setDefault('{{ Session::get("business.time_zone") }}');
     $(document).ready(function(){
         $.ajaxSetup({

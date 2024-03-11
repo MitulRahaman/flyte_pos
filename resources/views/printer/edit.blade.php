@@ -14,7 +14,7 @@
 
 <!-- Main content -->
 <section class="content">
-{!! Form::open(['url' => action('PrinterController@update', [$printer->id]), 'method' => 'PUT', 
+{!! Form::open(['url' => action([\App\Http\Controllers\PrinterController::class, 'update'], [$printer->id]), 'method' => 'PUT', 
 'id' => 'add_printer_form' ]) !!}
   <div class="box box-solid">
     <div class="box-body">
@@ -77,8 +77,8 @@
           </div>
         </div>
 
-        <div class="col-sm-12">
-          <button type="submit" class="btn btn-primary pull-right">@lang('messages.update')</button>
+        <div class="col-sm-12 text-center">
+          <button type="submit" class="btn btn-primary btn-big">@lang('messages.update')</button>
         </div>
       </div>
     </div>

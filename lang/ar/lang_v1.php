@@ -1352,4 +1352,9 @@ return [
     'kitchen_order_tooltip' => 'سيتم إرسال الطلب إلى المطبخ فقط إذا تم التحقق من هذا الخيار',
     'disable_quotation' => 'تعطيل الاقتباس',
     'disable_card' => 'تعطيل البطاقة',
+    'assigned_to' => 'مخصص لـ',
+    'has_no_sell_from' => 'لا يوجد مبيعات من',
+    'delivery_note' => 'مذكرة توصيل',
+    'above_mentioned_items_received_in_good_condition' => 'تم استلام العناصر المذكورة أعلاه في حالة جيدة',
+    'received_by' => 'استلم من قبل',
 ];

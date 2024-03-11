@@ -1,9 +1,9 @@
-<table style="width:100%;">
+<table style="width:100%; color: #000000 !important;">
 	<thead>
 		<tr>
 			<td>
 
-			<p class="text-right color-555">
+			<p class="text-right color-555 font-30">
 				@lang('lang_v1.packing_slip')
 			</p>
 
@@ -29,7 +29,7 @@
 		<!-- Shop & Location Name  -->
 		@if(!empty($receipt_details->display_name))
 			<p>
-				{{$receipt_details->display_name}}
+				<span style="font-size:24px; font-weight:900; color:black;">{{$receipt_details->display_name}}</span>
 				@if(!empty($receipt_details->address))
 					<br/>{!! $receipt_details->address !!}
 				@endif
@@ -161,7 +161,7 @@
                             {{$line['name']}} {{$line['product_variation']}} {{$line['variation']}} 
                             @if(!empty($line['sub_sku'])), {{$line['sub_sku']}} @endif @if(!empty($line['brand'])), {{$line['brand']}} @endif
                             @if(!empty($line['product_custom_fields'])), {{$line['product_custom_fields']}} @endif
-                            @if(!empty($line['sell_line_note']))({{$line['sell_line_note']}}) @endif
+                            @if(!empty($line['sell_line_note']))({!!$line['sell_line_note']!!}) @endif
                             @if(!empty($line['lot_number']))<br> {{$line['lot_number_label']}}:  {{$line['lot_number']}} @endif 
                             @if(!empty($line['product_expiry'])), {{$line['product_expiry_label']}}:  {{$line['product_expiry']}} @endif 
                         </td>
@@ -178,7 +178,7 @@
 								<td>
 		                            {{$modifier['name']}} {{$modifier['variation']}} 
 		                            @if(!empty($modifier['sub_sku'])), {{$modifier['sub_sku']}} @endif 
-		                            @if(!empty($modifier['sell_line_note']))({{$modifier['sell_line_note']}}) @endif 
+		                            @if(!empty($modifier['sell_line_note']))({!!$modifier['sell_line_note']!!}) @endif 
 		                        </td>
 								<td class="text-right">
 									{{$modifier['quantity']}} {{$modifier['units']}}

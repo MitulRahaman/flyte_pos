@@ -1344,4 +1344,9 @@ return [
     'kitchen_order_tooltip' => 'यह विकल्प चेक किया जाता है तो केवल तब पर्याप्त बेज दर्ज करेगा',
     'disable_quotation' => 'कोटेशन अक्षम करें',
     'disable_card' => 'कार्ड अक्षम करें',
+    'assigned_to' => 'सौंपा गया',
+    'has_no_sell_from' => 'से कोई बिक्री नहीं है',
+    'delivery_note' => 'डिलीवरी नोट',
+    'above_mentioned_items_received_in_good_condition' => 'उपर उल्लिखित आइटम सुरक्षित स्थिति में प्राप्त हुए',
+    'received_by' => 'द्वारा प्राप्त',
 ];

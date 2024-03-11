@@ -1333,4 +1333,9 @@ return [
     'kitchen_order_tooltip' => 'Porosia do të dërgohet në kuzhinë vetëm nëse ky opsion është zgjedhur',
     'disable_quotation' => 'Çaktivizo Kuotën',
     'disable_card' => 'Çaktivizo Kartën',
+    'assigned_to' => 'Caktuar për',
+    'has_no_sell_from' => 'Nuk ka shitje nga',
+    'delivery_note' => 'Shënime dërgese',
+    'above_mentioned_items_received_in_good_condition' => 'Artikujt e përmendur më lart janë marrë në gjendje të mirë',
+    'received_by' => 'Marrë nga',
 ];

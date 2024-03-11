@@ -10,7 +10,7 @@
 
 <!-- Main content -->
 <section class="content no-print">
-	{!! Form::open(['url' => action('StockTransferController@store'), 'method' => 'post', 'id' => 'stock_transfer_form' ]) !!}
+	{!! Form::open(['url' => action([\App\Http\Controllers\StockTransferController::class, 'store']), 'method' => 'post', 'id' => 'stock_transfer_form' ]) !!}
 	<div class="box box-solid">
 		<div class="box-body">
 			<div class="row">
@@ -98,7 +98,7 @@
 						<tbody>
 						</tbody>
 						<tfoot>
-							<tr class="text-center"><td colspan="3"></td><td><div class="pull-right"><b>@lang('stock_adjustment.total_amount'):</b> <span id="total_adjustment">0.00</span></div></td></tr>
+							<tr class="text-center"><td colspan="3"></td><td><div class="pull-right"><b>@lang('sale.total'):</b> <span id="total_adjustment">0.00</span></div></td></tr>
 						</tfoot>
 					</table>
 					</div>
@@ -123,8 +123,13 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-12">
-					<button type="submit" id="save_stock_transfer" class="btn btn-primary pull-right">@lang('messages.save')</button>
+				<div class="col-md-12 text-right">
+					<b>@lang('stock_adjustment.total_amount'):</b> <span id="final_total_text">0.00</span>
+				</div>
+				<br>
+				<br>
+				<div class="col-sm-12 text-center">
+					<button type="submit" id="save_stock_transfer" class="btn btn-primary btn-big">@lang('messages.save')</button>
 				</div>
 			</div>
 

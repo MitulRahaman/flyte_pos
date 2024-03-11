@@ -1374,4 +1374,9 @@ return [
     'kitchen_order_tooltip' => 'O pedido será enviado para a cozinha apenas se esta opção estiver marcada',
     'disable_quotation' => 'Desativar Orçamento',
     'disable_card' => 'Desativar Cartão',
+    'assigned_to' => 'Atribuído a',
+    'has_no_sell_from' => 'Não tem vendas de',
+    'delivery_note' => 'Nota de entrega',
+    'above_mentioned_items_received_in_good_condition' => 'Itens mencionados acima recebidos em bom estado',
+    'received_by' => 'Recebido por',
 ];

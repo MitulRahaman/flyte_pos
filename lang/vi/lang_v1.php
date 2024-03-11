@@ -1359,4 +1359,9 @@ return [
     'kitchen_order_tooltip' => 'Đơn hàng sẽ chỉ được gửi đến bếp nếu tùy chọn này được chọn',
     'disable_quotation' => 'Tắt Báo giá',
     'disable_card' => 'Tắt Thẻ',
+    'assigned_to' => 'Được giao cho',
+    'has_no_sell_from' => 'Không có bán từ',
+    'delivery_note' => 'Chú thích giao hàng',
+    'above_mentioned_items_received_in_good_condition' => 'Các mục đã nói ở trên đã được nhận trong tình trạng tốt',
+    'received_by' => 'Được nhận bởi',
 ];

@@ -11,7 +11,7 @@
 
 <!-- Main content -->
 <section class="content no-print">
-	{!! Form::open(['url' => action('CombinedPurchaseReturnController@save'), 'method' => 'post', 'id' => 'purchase_return_form', 'files' => true ]) !!}
+	{!! Form::open(['url' => action([\App\Http\Controllers\CombinedPurchaseReturnController::class, 'save']), 'method' => 'post', 'id' => 'purchase_return_form', 'files' => true ]) !!}
 	<div class="box box-solid">
 		<div class="box-body">
 			<div class="row">
@@ -137,8 +137,8 @@
 		</div>
 	</div> <!--box end-->
 	<div class="row">
-		<div class="col-md-12">
-			<button type="button" id="submit_purchase_return_form" class="btn btn-primary pull-right btn-flat">@lang('messages.submit')</button>
+		<div class="col-md-12 text-center">
+			<button type="button" id="submit_purchase_return_form" class="btn btn-primary btn-big btn-flat">@lang('messages.submit')</button>
 		</div>
 	</div>
 	{!! Form::close() !!}

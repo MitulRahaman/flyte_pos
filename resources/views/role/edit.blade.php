@@ -14,7 +14,7 @@
       $pos_settings = !empty(session('business.pos_settings')) ? json_decode(session('business.pos_settings'), true) : [];
     @endphp
     @component('components.widget', ['class' => 'box-primary'])
-        {!! Form::open(['url' => action('RoleController@update', [$role->id]), 'method' => 'PUT', 'id' => 'role_form' ]) !!}
+        {!! Form::open(['url' => action([\App\Http\Controllers\RoleController::class, 'update'], [$role->id]), 'method' => 'PUT', 'id' => 'role_form' ]) !!}
         <div class="row">
         <div class="col-md-4">
           <div class="form-group">
@@ -278,7 +278,7 @@
           <div class="col-md-12">
             <div class="checkbox">
               <label>
-                {!! Form::radio('radio_option[customer_view_by_sell]', 'customer_irrespective_of_sell', in_array('customer_with_no_sell_one_year', $role_permissions), 
+                {!! Form::radio('radio_option[customer_view_by_sell]', 'customer_irrespective_of_sell', in_array('customer_irrespective_of_sell', $role_permissions), 
                 [ 'class' => 'input-icheck']); !!} {{ __( 'lang_v1.customer_irrespective_of_sell' ) }}
               </label>
             </div>
@@ -464,6 +464,56 @@
         </div>
         <hr>
         @endif
+        @if(!empty($common_settings['enable_purchase_requisition']))
+          <div class="row check_group">
+            <div class="col-md-1">
+              <h4>@lang( 'lang_v1.purchase_requisition' )</h4>
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="check_all input-icheck" > {{ __( 'role.select_all' ) }}
+                  </label>
+                </div>
+            </div>
+            <div class="col-md-9">
+              <div class="col-md-12">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::radio('radio_option[purchase_requisition_view]', 'purchase_requisition.view_all', in_array('purchase_requisition.view_all', $role_permissions), 
+                    [ 'class' => 'input-icheck']); !!} {{ __( 'lang_v1.view_all_purchase_requisition' ) }}
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::radio('radio_option[purchase_requisition_view]', 'purchase_requisition.view_own', in_array('purchase_requisition.view_own', $role_permissions), 
+                    [ 'class' => 'input-icheck']); !!} {{ __( 'lang_v1.view_own_purchase_requisition' ) }}
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::checkbox('permissions[]', 'purchase_requisition.create', in_array('purchase_requisition.create', $role_permissions), 
+                    [ 'class' => 'input-icheck']); !!} {{ __( 'lang_v1.create_purchase_requisition' ) }}
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="checkbox">
+                  <label>
+                    {!! Form::checkbox('permissions[]', 'purchase_requisition.delete', in_array('purchase_requisition.delete', $role_permissions), 
+                    [ 'class' => 'input-icheck']); !!} {{ __( 'lang_v1.delete_purchase_requisition' ) }}
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <hr>
+        @endif
         @if(!empty($common_settings['enable_purchase_order']))
           <div class="row check_group">
             <div class="col-md-1">
@@ -584,12 +634,84 @@
                       </label>
                     </div>
                   </div>
-
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'edit_pos_payment', 
+                            in_array('edit_pos_payment', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.add_edit_payment') }}
+                      </label>
+                    </div>
+                  </div>
                   <div class="col-md-12">
                     <div class="checkbox">
                       <label>
                         {!! Form::checkbox('permissions[]', 'print_invoice', in_array('print_invoice', $role_permissions), ['class' => 'input-icheck']); !!}
                         {{ __('lang_v1.print_invoice') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_pay_checkout', in_array('disable_pay_checkout', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_pay_checkout') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_draft', in_array('disable_draft', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_draft') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_express_checkout', in_array('disable_express_checkout', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_express_checkout') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_discount', in_array('disable_discount', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_discount') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_suspend_sale', in_array('disable_suspend_sale', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_suspend_sale') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_credit_sale', in_array('disable_credit_sale', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_credit_sale_button') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_quotation', in_array('disable_quotation', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_quotation') }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="checkbox">
+                      <label>
+                        {!! Form::checkbox('permissions[]', 'disable_card', in_array('disable_card', $role_permissions), ['class' => 'input-icheck']); !!}
+                        {{ __('lang_v1.disable_card') }}
                       </label>
                     </div>
                   </div>
@@ -1532,8 +1654,8 @@
         @endif
         @include('role.partials.module_permissions')
         <div class="row">
-        <div class="col-md-12">
-           <button type="submit" class="btn btn-primary pull-right">@lang( 'messages.update' )</button>
+        <div class="col-md-12 text-center">
+           <button type="submit" class="btn btn-primary btn-big">@lang( 'messages.update' )</button>
         </div>
         </div>
 

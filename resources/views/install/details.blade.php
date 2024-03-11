@@ -40,7 +40,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="app_name">Application Name:*</label>
-                        <input type="text" class="form-control" name="APP_NAME" id="app_name" placeholder="Ultimate POS" required>
+                        <input type="text" class="form-control" name="APP_NAME" id="app_name" placeholder="Flyte POS" required>
                     </div>
                   </div>
                   
@@ -129,8 +129,8 @@
                   <hr/>
                   <div class="col-md-6">
                     <div class="form-group">
-                        <label for="MAIL_DRIVER">Send mails using:*</label>
-                        <select class="form-control" name="MAIL_DRIVER" id="MAIL_DRIVER">
+                        <label for="MAIL_MAILER">Send mails using:*</label>
+                        <select class="form-control" name="MAIL_MAILER" id="MAIL_MAILER">
                           <option value="sendmail">PHP Mail</option>
                           <option value="smtp">SMTP</option>
                         </select>
@@ -141,14 +141,14 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="MAIL_FROM_ADDRESS">Default from address:*</label>
-                        <input type="email" class="form-control" id="MAIL_FROM_ADDRESS" name="MAIL_FROM_ADDRESS" placeholder="hello@ultimatepos.com" required>
+                        <input type="email" class="form-control" id="MAIL_FROM_ADDRESS" name="MAIL_FROM_ADDRESS" placeholder="info@flytepos.com" required>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="MAIL_FROM_NAME">Default from name:</label>
-                        <input type="text" class="form-control" id="MAIL_FROM_NAME" name="MAIL_FROM_NAME" placeholder="Ultimate POS (Optional)">
+                        <input type="text" class="form-control" id="MAIL_FROM_NAME" name="MAIL_FROM_NAME" placeholder="Flyte POS (Optional)">
                     </div>
                   </div>
 
@@ -211,7 +211,7 @@
 @section('javascript')
   <script type="text/javascript">
     $(document).ready(function(){
-      $('select#MAIL_DRIVER').change(function(){
+      $('select#MAIL_MAILER').change(function(){
         var driver = $(this).val();
 
         if(driver == 'smtp'){

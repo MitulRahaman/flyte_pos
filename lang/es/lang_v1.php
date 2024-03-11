@@ -1345,4 +1345,10 @@ return [
     'kitchen_order_tooltip' => 'El pedido se enviará a la cocina solo si esta opción está marcada',
     'disable_quotation' => 'Desactivar Cotización',
     'disable_card' => 'Desactivar Tarjeta',
+    'assigned_to' => 'Asignado a',
+    'has_no_sell_from' => 'No tiene venta desde',
+    'delivery_note' => 'Nota de entrega',
+    'above_mentioned_items_received_in_good_condition' => 'Los artículos mencionados anteriormente se recibieron en buen estado',
+    'received_by' => 'Recibido por',
 ];
+

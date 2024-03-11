@@ -7,7 +7,7 @@
 		<!-- <columns column-count="{{$barcode_details->stickers_in_one_row}}" column-gap="{{$barcode_details->col_distance*1}}"> -->
 	@endif
 		<td align="center" valign="center">
-			<div style="overflow: hidden !important;display: flex; flex-wrap: wrap;align-content: center;width: {{$barcode_details->width * 1}}in; height: {{$barcode_details->height * 1}}in;">
+			<div style="overflow: hidden !important;display: flex; flex-wrap: wrap;align-content: center;width: {{$barcode_details->width * 1}}in; height: {{$barcode_details->height * 1}}in; justify-content: center;">
 				
 
 				<div>
@@ -36,6 +36,24 @@
 							{{$page_product->product_variation_name}}:<b>{{$page_product->variation_name}}</b>
 						</span>
 					@endif
+					{{-- product_custom_fields --}}
+					@php
+						$custom_labels = json_decode(session('business.custom_labels'), true);
+						$product_custom_fields = !empty($custom_labels['product']) ? $custom_labels['product'] : [];
+					@endphp
+
+					@foreach($product_custom_fields as $index => $cf)
+						@php
+							$field_name = 'product_custom_field' . $loop->iteration;
+						@endphp
+						@if(!empty($cf) && !empty($page_product->$field_name ) && !empty($print[$field_name]))
+							<span style="font-size: {{ $print[$field_name . '_size'] }}px">
+								<b>{{ $cf }}:</b>
+								{{ $page_product->$field_name }}
+							</span>
+						@endif
+					@endforeach
+					<br>
 
 					{{-- Price --}}
 					@if(!empty($print['price']))
@@ -68,14 +86,12 @@
 							{{$page_product->packing_date}}
 						</span>
 					@endif
-					<br>
-
 					{{-- Barcode --}}
-					<img style="max-width:90% !important;height: {{$barcode_details->height*0.24}}in !important;" src="data:image/png;base64,{{DNS1D::getBarcodePNG($page_product->sub_sku, $page_product->barcode_type, 1,30, array(0, 0, 0), false)}}">
+					<img style="max-width:90% !important;height: {{$barcode_details->height*0.24}}in !important; display: block;" src="data:image/png;base64,{{DNS1D::getBarcodePNG($page_product->sub_sku, $page_product->barcode_type, 1,30, array(0, 0, 0), false)}}">
 					
-					<span>
-							{{$page_product->sub_sku}}
-						</span>
+					<span style="font-size: 10px !important">
+						{{$page_product->sub_sku}}
+					</span>
 				</div>
 			</div>
 		
